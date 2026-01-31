@@ -3,6 +3,7 @@ import type { Player } from '../models/player.ts'
 
 export class GameplayScene extends Phaser.Scene {
   players: Player[]
+  playerSprites = new Map<string, Phaser.GameObjects.Sprite>()
 
   constructor(players: Player[]) {
     super('GameplayScene')
@@ -14,6 +15,10 @@ export class GameplayScene extends Phaser.Scene {
   }
 
   create() {
+    window.addEventListener('vue:delete-player', this.onDeletePlayer)
+    window.addEventListener('vue:modal-open', this.disableInput)
+    window.addEventListener('vue:modal-close', this.enableInput)
+
     const MAX_VISIBLE = 7
     const visiblePlayers = this.players.slice(0, MAX_VISIBLE)
 
@@ -54,8 +59,7 @@ export class GameplayScene extends Phaser.Scene {
       })
 
       sprite.setData('playerName', player.name)
-
-      window.addEventListener('vue:delete-player', this.onDeletePlayer)
+      this.playerSprites.set(player.name, sprite)
 
       this.add
         .text(sprite.x, sprite.y + spriteHeight / 2 + 10, player.name, {
@@ -71,18 +75,29 @@ export class GameplayScene extends Phaser.Scene {
     const customEvent = event as CustomEvent<string>
     const playerName = customEvent.detail
 
-    this.children.each((child: any) => {
-      if (child.getData && child.getData('playerName') === playerName) {
-        console.log(`Disabling player sprite: ${playerName}`)
-        child.setTint(0x808080)
-        child.disableInteractive()
-      }
-    })
+    const sprite = this.playerSprites.get(playerName)
+    if (!sprite) return
+  
+    sprite.setTint(0x808080)
+    sprite.disableInteractive()
   }
 
   shutdown() {
     window.removeEventListener('vue:delete-player', this.onDeletePlayer)
+    window.removeEventListener('vue:modal-open', this.disableInput)
+    window.removeEventListener('vue:modal-close', this.enableInput)
+    this.playerSprites.clear()
   }
 
-  
+  disableInput = () => {
+    this.playerSprites.forEach(sprite => {
+      sprite.disableInteractive()
+    })
+  }
+
+  enableInput = () => {
+    this.playerSprites.forEach(sprite => {
+      sprite.setInteractive({ useHandCursor: true })
+    })
+  }
 }

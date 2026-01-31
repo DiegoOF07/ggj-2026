@@ -12,7 +12,7 @@ const revealed = ref(false)
 const displayText = ref('')
 
 const showModal = ref(false)
-const selectedPlayer = ref<Player | null>(null)
+const selectedPlayerName = ref<string | null>(null)
 
 const names = ['Ana', 'Bob', 'Chris', 'Daniel', 'Erick', 'Fernando', 'Gary']
 // const names = ['Ana', 'Bob', 'Chris']
@@ -83,22 +83,36 @@ watch(phase, (newPhase) => {
 
 const onPlayerClicked = (event: Event) => {
   const customEvent = event as CustomEvent<Player>
-  selectedPlayer.value = customEvent.detail
+  selectedPlayerName.value = customEvent.detail.name
   showModal.value = true
+  window.dispatchEvent(
+    new CustomEvent('vue:modal-open')
+  )
 }
 
 const confirmDelete = () => {
+  if (!selectedPlayerName.value) return
+
   window.dispatchEvent(
     new CustomEvent('vue:delete-player', {
-      detail: selectedPlayer.value?.name
+      detail: selectedPlayerName.value
     })
   )
 
   showModal.value = false
+  selectedPlayerName.value = null
+
+  window.dispatchEvent(
+    new CustomEvent('vue:modal-close')
+  )
 }
 
 const cancelDelete = () => {
   showModal.value = false
+   
+  window.dispatchEvent(
+    new CustomEvent('vue:modal-close')
+  )
 }
 
 onMounted(() => {
@@ -128,7 +142,7 @@ onUnmounted(() => {
   <ConfirmationModal
     :show="showModal"
     title="¿Desenmascarar jugador?"
-    :message="`¿Estas seguro que quieres desenmascarar a ${selectedPlayer?.name}?`"
+    :message="`¿Estas seguro que quieres desenmascarar a ${selectedPlayerName}?`"
     @confirm="confirmDelete"
     @cancel="cancelDelete"
   />

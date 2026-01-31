@@ -62,7 +62,6 @@ watch(playersCount, (newCount, oldCount) => {
   }
 })
 
-// Controles
 const increase = () => {
   if (playersCount.value < maxPlayers) playersCount.value++
 }
@@ -71,7 +70,6 @@ const decrease = () => {
   if (playersCount.value > minPlayers) playersCount.value--
 }
 
-// Continuar
 const continueGame = () => {
   const hasEmpty = players.value.some(name => name.trim() === '')
   if (hasEmpty) {
