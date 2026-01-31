@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { gameState } from '@/game/gameState'
+import { ref } from 'vue'
 import type { Player } from '../../models/player'
 
 const names = ['Ana', 'Bob', 'Chris', 'Daniel']
@@ -10,52 +9,54 @@ const players: Player[] = names.map((name, index) => ({
   name,
   isImpostor: index === impostorIndex,
   isActive: true,
-  word: null
+  word: 'lentes'
 }))
-
-gameState.players = players
 
 const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
+const revealed = ref(false)
+
 const displayText = ref('')
 
-function updateDisplay() {
+function coverRole() {
   const player: Player = players[currentIndex.value]
-
-  if (player.isImpostor) {
-    displayText.value = `${player.name} is IMPOSTOR`
-  } else {
-    displayText.value = `${player.name}`
-  }
+  displayText.value = `Turno de ${player.name}. Presiona revelar`
+  revealed.value = false
 }
 
-onMounted(() => {
-  if (players.length === 0) {
-    displayText.value = 'No players'
-    return
+function revealRole() {
+  const player = players[currentIndex.value]
+
+  if (player.isImpostor) {
+    displayText.value = `${player.name} es el IMPOSTOR`
+  } else {
+    displayText.value =
+      `${player.name} es INOCENTE. Palabra: ${player.word}`
   }
 
-  updateDisplay()
+  revealed.value = true
+}
 
-  const interval = setInterval(() => {
-    currentIndex.value++
+function nextPlayer() {
+  currentIndex.value++
 
-    if (currentIndex.value >= players.length) {
-      clearInterval(interval)
-      phase.value = 'game'
-      return
-    }
+  if (currentIndex.value >= players.length) {
+    phase.value = 'game'
+    return
+  }
+  coverRole()
+}
 
-    updateDisplay()
-  }, 5000)
-})
+coverRole()
 </script>
 
 <template>
   <div>
     <div v-if="phase === 'presentation'">
       <h1>{{ displayText }}</h1>
-      <p>(pasa automáticamente cada 5 segundos)</p>
+
+      <button v-if="!revealed" @click="revealRole">Revelar</button>
+      <button v-else @click="nextPlayer">Siguiente</button>
     </div>
 
     <div v-else>
@@ -63,3 +64,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
