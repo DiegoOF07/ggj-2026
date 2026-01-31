@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
+import Phaser from 'phaser'
+import { GameplayScene } from '../../game/gameplayScene'
+import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
 
-const names = ['Ana', 'Bob', 'Chris', 'Daniel']
+const phase = ref<'presentation' | 'game'>('presentation')
+const currentIndex = ref(0)
+const revealed = ref(false)
+const displayText = ref('')
+
+const names = ['Ana', 'Bob', 'Chris', 'Daniel', 'Erick', 'Fernando', 'Gary']
 const impostorIndex = Math.floor(Math.random() * names.length)
 
 const players: Player[] = names.map((name, index) => ({
@@ -11,12 +19,9 @@ const players: Player[] = names.map((name, index) => ({
   isActive: true,
   word: 'lentes'
 }))
+gameState.players = players
 
-const phase = ref<'presentation' | 'game'>('presentation')
-const currentIndex = ref(0)
-const revealed = ref(false)
-
-const displayText = ref('')
+let phaserGame: Phaser.Game | null = null
 
 function coverRole() {
   const player: Player | undefined = players[currentIndex.value]
@@ -55,20 +60,36 @@ function nextPlayer() {
 }
 
 coverRole()
+
+watch(phase, (newPhase) => {
+  if (newPhase === 'game' && !phaserGame) {
+    phaserGame = new Phaser.Game({
+      type: Phaser.AUTO,
+      width: 640*2,
+      height: 360*2,
+      parent: 'phaser-container',
+      backgroundColor: '#ffff',
+      scene: [
+        new GameplayScene(gameState.players)
+      ]
+    })
+  }
+})
+
+onUnmounted(() => {
+  phaserGame?.destroy(true)
+})
 </script>
 
 <template>
   <div>
     <div v-if="phase === 'presentation'">
       <h1>{{ displayText }}</h1>
-
       <button v-if="!revealed" @click="revealRole">Revelar</button>
       <button v-else @click="nextPlayer">Siguiente</button>
     </div>
-
     <div v-else>
-      <h1>Empieza el juego</h1>
+      <div id="phaser-container"></div>
     </div>
   </div>
 </template>
-
