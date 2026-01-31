@@ -4,10 +4,13 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-    "compilerOptions": {
+  "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "lib": ["es6", "dom", "dom.iterable", "scripthost"],
+    "typeRoots": ["./node_modules/phaser/types"],
+    "types": ["Phaser"]
   }
 }
