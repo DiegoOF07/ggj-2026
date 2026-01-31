@@ -9,38 +9,39 @@ export class GameplayScene extends Phaser.Scene {
     this.players = players
   }
 
+  preload() {
+    this.load.image('player', '../../src/assets/Test1/Player01.png');
+  }
+
   create() {
     const MAX_VISIBLE = 7
     const visiblePlayers = this.players.slice(0, MAX_VISIBLE)
 
-    const rectWidth = 125
-    const rectHeight = 250
+    const spriteWidth = 125
+    const spriteHeight = 250
 
     const spacing = 20
     const totalWidth =
-      visiblePlayers.length * rectWidth +
+      visiblePlayers.length * spriteWidth +
       (visiblePlayers.length - 1) * spacing
 
     const startX = (this.scale.width - totalWidth) / 2
     const centerY = this.scale.height / 2
 
     visiblePlayers.forEach((player, index) => {
-      const x = startX + index * (rectWidth + spacing)
-      const y = centerY
+      const x = startX + index * (spriteWidth + spacing)
 
-      // Rectángulo placeholder
-      this.add.rectangle(
-        x + rectWidth / 2,
-        y,
-        rectWidth,
-        rectHeight,
-        0x4a90e2
+      const sprite = this.add.sprite(
+        x + spriteWidth / 2,
+        centerY,
+        'player'
       )
 
-      // Nombre del jugador (debug / placeholder)
+      sprite.setDisplaySize(spriteWidth, spriteHeight)
+
       this.add.text(
-        x + rectWidth / 2,
-        y + rectHeight / 2 + 10,
+        sprite.x,
+        sprite.y + spriteHeight / 2 + 10,
         player.name,
         {
           fontSize: '14px',
