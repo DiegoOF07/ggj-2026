@@ -1,0 +1,294 @@
+[
+  {
+    "category": "Naturaleza",
+    "words": ["agua", "plantas", "flores"]
+  },
+  {
+    "category": "Vehículos",
+    "words": ["coche", "bicicleta", "autobús"]
+  },
+  {
+    "category": "Frutas tropicales",
+    "words": ["mango", "piña", "papaya"]
+  },
+  {
+    "category": "Instrumentos musicales de cuerda",
+    "words": ["guitarra", "violín", "arpa"]
+  },
+  {
+    "category": "Elementos químicos gaseosos",
+    "words": ["oxígeno", "hidrógeno", "helio"]
+  },
+  {
+    "category": "Deportes de raqueta",
+    "words": ["tenis", "bádminton", "squash"]
+  },
+  {
+    "category": "Ropa de abrigo",
+    "words": ["abrigo", "bufanda", "guantes"]
+  },
+  {
+    "category": "Utensilios de cocina para cortar",
+    "words": ["cuchillo", "tijeras", "pelador"]
+  },
+  {
+    "category": "Tipos de café",
+    "words": ["expreso", "capuchino", "americano"]
+  },
+  {
+    "category": "Planetas del sistema solar",
+    "words": ["Marte", "Venus", "Júpiter", "Saturno", "Urano", "Neptuno", "Mercurio" ]
+  },
+  {
+    "category": "Muebles de dormitorio",
+    "words": ["cama", "mesita de noche", "armario"]
+  },
+  {
+    "category": "Animales que empiezan con 'G'",
+    "words": ["gato", "gorila", "gacela"]
+  },
+  {
+    "category": "Tipos de pan",
+    "words": ["baguette", "sandwich", "integral"]
+  },
+  {
+    "category": "Herramientas de mano",
+    "words": ["martillo", "destornillador", "llave inglesa"]
+  },
+  {
+    "category": "Marcas de autos",
+    "words": ["Volkswagen", "BMW", "Mercedes", "Toyota", "Honda", "Ford"]
+  },
+  {
+    "category": "Bebidas calientes",
+    "words": ["té", "chocolate caliente", "ponche", "café"]
+  },
+  {
+    "category": "Artículos de papelería",
+    "words": ["bolígrafo", "lápiz", "sacapuntas", "regla", "cuaderno", "goma de borrar"]
+  },
+  {
+    "category": "Tipos de danza",
+    "words": ["ballet", "salsa", "flamenco"]
+  },
+  {
+    "category": "Aves que no vuelan",
+    "words": ["pingüino", "avestruz", "kiwi"]
+  },
+  {
+    "category": "Monedas de América Latina",
+    "words": ["peso mexicano", "real brasileño", "sol peruano"]
+  },
+  {
+    "category": "Especias",
+    "words": ["pimienta", "orégano", "canela"]
+  },
+  {
+    "category": "Géneros cinematográficos",
+    "words": ["comedia", "drama", "ciencia ficción"]
+  },
+  {
+    "category": "Medios de transporte público",
+    "words": ["metro", "tranvía", "ferry"]
+  },
+  {
+    "category": "Huesos del cuerpo",
+    "words": ["fémur", "húmero", "tibia", "radio", "clavícula", "escápula"]
+  },
+  {
+    "category": "Tipos de árbol",
+    "words": ["manzano", "naranjo", "limonero"]
+  },
+  {
+    "category": "Materiales de construcción",
+    "words": ["cemento", "ladrillo", "acero"]
+  },
+  {
+    "category": "Aparatos de gimnasio",
+    "words": ["cinta de correr", "bicicleta estática", "elíptica"]
+  },
+  {
+    "category": "Métodos de cocción",
+    "words": ["hervido", "asado", "frito"]
+  },
+  {
+    "category": "Artistas del Renacimiento",
+    "words": ["Leonardo da Vinci", "Miguel Ángel"]
+  },
+  {
+    "category": "Marcas de teléfonos móviles",
+    "words": ["Samsung", "Apple", "Xiaomi", "Huawei"]
+  },
+  {
+    "category": "Componentes de un ordenador",
+    "words": ["procesador", "RAM", "tarjeta gráfica"]
+  },
+  {
+    "category": "Instrumentos de percusión",
+    "words": ["tambor", "xilófono", "platillos"]
+  },
+  {
+    "category": "Marcas de refrescos",
+    "words": ["Coca-Cola", "Pepsi", "Fanta"]
+  },
+  {
+    "category": "Aparatos de cocina",
+    "words": ["tostadora", "hervidor", "rallador"]
+  },
+  {
+    "category": "Mamíferos marinos",
+    "words": ["delfín", "ballena", "foca"]
+  },
+  {
+    "category": "Redes sociales",
+    "words": ["Instagram", "Twitter", "TikTok"]
+  },
+  {
+    "category": "Unidades de tiempo",
+    "words": ["segundo", "minuto", "hora", "día", "semana", "mes", "año"]
+  },
+  {
+    "category": "Órganos del sistema digestivo",
+    "words": ["estómago", "intestino", "hígado", "páncreas"]
+  },
+  {
+    "category": "Marcas de deporte",
+    "words": ["Nike", "Adidas", "Puma", "Reebok"]
+  },
+  {
+    "category": "Países nórdicos",
+    "words": ["Suecia", "Noruega", "Dinamarca"]
+  },
+  {
+    "category": "Elementos de una obra de teatro",
+    "words": ["acto", "escena", "diálogo"]
+  },
+  {
+    "category": "Aves rapaces",
+    "words": ["águila", "halcón", "búho"]
+  },
+  {
+    "category": "Herramientas de jardinería",
+    "words": ["pala", "rastrillo", "podadera"]
+  },
+  {
+    "category": "Flores de primavera",
+    "words": ["tulipán", "jacinto", "narciso", "margarita"]
+  },
+  {
+    "category": "Profesiones creativas",
+    "words": ["diseñador", "escritor", "fotógrafo"]
+  },
+  {
+    "category": "Tipos de isla",
+    "words": ["volcánica", "coralina", "continental"]
+  },
+  {
+    "category": "Tipos de energía renovable",
+    "words": ["solar", "eólica", "hidráulica"]
+  },
+  {
+    "category": "Verduras de hoja verde",
+    "words": ["espinaca", "lechuga", "acelga"]
+  },
+  {
+    "category": "Metales preciosos",
+    "words": ["oro", "plata", "platino"]
+  },
+  {
+    "category": "Tipos de pasta italiana",
+    "words": ["espagueti", "lasaña", "ravioli"]
+  },
+  {
+    "category": "Compositores clásicos",
+    "words": ["Mozart", "Beethoven", "Bach"]
+  },
+  {
+    "category": "Tipos de hueso por forma",
+    "words": ["largo", "corto", "plano"]
+  },
+  {
+    "category": "Tipos de desierto",
+    "words": ["arenoso", "pedregoso", "polar"]
+  },
+  {
+    "category": "Marcas de cámaras fotográficas",
+    "words": ["Canon", "Nikon", "Sony"]
+  },
+  {
+    "category": "Tipos de sentimiento",
+    "words": ["alegría", "tristeza", "miedo"]
+  },
+  {
+    "category": "Condimentos para pizza",
+    "words": ["orégano", "albahaca", "ajo en polvo"]
+  },
+  {
+    "category": "Instrumentos de viento metal",
+    "words": ["trompeta", "trombón", "tuba"]
+  },
+  {
+    "category": "Tipos de lluvia",
+    "words": ["llovizna", "chubasco", "tormenta"]
+  },
+  {
+    "category": "Aparatos para medir",
+    "words": ["regla", "cinta métrica", "calibre"]
+  },
+  {
+    "category": "Materiales textiles naturales",
+    "words": ["algodón", "lana", "seda"]
+  },
+  {
+    "category": "Elementos de una computadora portátil",
+    "words": ["pantalla", "teclado", "touchpad"]
+  },
+  {
+    "category": "Animales que hibernan",
+    "words": ["oso pardo", "erizo", "murciélago"]
+  },
+  {
+    "category": "Profesiones de la construcción",
+    "words": ["albañil", "fontanero", "electricista"]
+  },
+  {
+    "category": "Tipos de lago por formación",
+    "words": ["glacial", "volcánico", "cárstico"]
+  },
+  {
+    "category": "Aparatos de comunicación antigua",
+    "words": ["telégrafo", "fax", "buscapersonas"]
+  },
+  {
+    "category": "Animales que empiezan con 'E'",
+    "words": ["elefante", "águila", "erizo"]
+  },
+  {
+    "category": "Tipos de mineral",
+    "words": ["cuarzo", "calcita", "pirita"]
+  },
+  {
+    "category": "Ramas de la biología",
+    "words": ["zoología", "botánica", "microbiología"]
+  },
+  {
+    "category": "Animales de granja",
+    "words": ["vaca", "cerdo", "gallina"]
+  },
+  {
+    "category": "Herramientas digitales de ofimática",
+    "words": ["procesador de texto", "hoja de cálculo", "presentaciones"]
+  },
+  {
+    "category": "Tipos de bosque",
+    "words": ["templado", "tropical", "boreal"]
+  },
+  {
+    "category": "Profesiones relacionadas con animales",
+    "words": ["veterinario", "adiestrador", "cuidador de zoológico"]
+  },
+  {
+    "category": "Aparatos para la vista",
+    "words": ["gafas", "lentes de contacto", "monóculo"]
+  }
+]
