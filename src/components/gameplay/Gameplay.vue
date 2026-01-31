@@ -19,13 +19,20 @@ const revealed = ref(false)
 const displayText = ref('')
 
 function coverRole() {
-  const player: Player = players[currentIndex.value]
-  displayText.value = `Turno de ${player.name}. Presiona revelar`
+  const player: Player | undefined = players[currentIndex.value]
+  if (player) {
+    displayText.value = `Turno de ${player.name}. Presiona revelar`
+  }
   revealed.value = false
 }
 
 function revealRole() {
-  const player = players[currentIndex.value]
+  const player: Player | undefined = players[currentIndex.value]
+
+  if (!player) {
+    displayText.value = 'No hay jugador en esta posición'
+    return
+  }
 
   if (player.isImpostor) {
     displayText.value = `${player.name} es el IMPOSTOR`
