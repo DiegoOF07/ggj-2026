@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Phaser from 'phaser'
 import { GameplayScene } from '../../game/gameplayScene'
 import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
+import ConfirmationModal from '../common/ConfirmationModal.vue'
 
 const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
 const revealed = ref(false)
 const displayText = ref('')
 
+const showModal = ref(false)
+const selectedPlayer = ref<Player | null>(null)
+
 const names = ['Ana', 'Bob', 'Chris', 'Daniel', 'Erick', 'Fernando', 'Gary']
+// const names = ['Ana', 'Bob', 'Chris']
 const impostorIndex = Math.floor(Math.random() * names.length)
 
 const players: Player[] = names.map((name, index) => ({
@@ -76,6 +81,34 @@ watch(phase, (newPhase) => {
   }
 })
 
+const onPlayerClicked = (event: Event) => {
+  const customEvent = event as CustomEvent<Player>
+  selectedPlayer.value = customEvent.detail
+  showModal.value = true
+}
+
+const confirmDelete = () => {
+  window.dispatchEvent(
+    new CustomEvent('vue:delete-player', {
+      detail: selectedPlayer.value?.name
+    })
+  )
+
+  showModal.value = false
+}
+
+const cancelDelete = () => {
+  showModal.value = false
+}
+
+onMounted(() => {
+  window.addEventListener('phaser:player-clicked', onPlayerClicked)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('phaser:player-clicked', onPlayerClicked)
+})
+
 onUnmounted(() => {
   phaserGame?.destroy(true)
 })
@@ -92,4 +125,11 @@ onUnmounted(() => {
       <div id="phaser-container"></div>
     </div>
   </div>
+  <ConfirmationModal
+    :show="showModal"
+    title="¿Desenmascarar jugador?"
+    :message="`¿Estas seguro que quieres desenmascarar a ${selectedPlayer?.name}?`"
+    @confirm="confirmDelete"
+    @cancel="cancelDelete"
+  />
 </template>
