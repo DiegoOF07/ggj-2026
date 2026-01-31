@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/gameplay',
     name: 'gameplay',
     component: Gameplay
-  }
+  },
 ]
 
 const router = createRouter({
