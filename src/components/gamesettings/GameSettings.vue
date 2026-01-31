@@ -77,7 +77,11 @@ const continueGame = () => {
     return
   }
 
-  router.push('/gameplay')
+  const playerNames = players.value.filter(name => name.trim() !== '')
+  router.push({
+    path: '/gameplay',
+    query: { players: JSON.stringify(playerNames) }
+  })
 }
 </script>
 
@@ -164,7 +168,7 @@ const continueGame = () => {
 }
 
 .alert-card {
-  background: white;
+  background: #2e2d2d;
   width: 90%;
   max-width: 320px;
   padding: 24px;

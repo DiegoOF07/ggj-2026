@@ -5,31 +5,24 @@ import { GameplayScene } from '../../game/gameplayScene'
 import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
 import ConfirmationModal from '../common/ConfirmationModal.vue'
+import { useRoute } from 'vue-router'
+
 
 const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
 const revealed = ref(false)
 const displayText = ref('')
 
+const route = useRoute()
+const players = ref<Player[]>([])
+
 const showModal = ref(false)
 const selectedPlayerName = ref<string | null>(null)
-
-const names = ['Ana', 'Bob', 'Chris', 'Daniel', 'Erick', 'Fernando', 'Gary']
-// const names = ['Ana', 'Bob', 'Chris']
-const impostorIndex = Math.floor(Math.random() * names.length)
-
-const players: Player[] = names.map((name, index) => ({
-  name,
-  isImpostor: index === impostorIndex,
-  isActive: true,
-  word: 'lentes'
-}))
-gameState.players = players
 
 let phaserGame: Phaser.Game | null = null
 
 function coverRole() {
-  const player: Player | undefined = players[currentIndex.value]
+  const player: Player | undefined = players.value[currentIndex.value]
   if (player) {
     displayText.value = `Turno de ${player.name}. Presiona revelar`
   }
@@ -37,7 +30,7 @@ function coverRole() {
 }
 
 function revealRole() {
-  const player: Player | undefined = players[currentIndex.value]
+  const player: Player | undefined = players.value[currentIndex.value]
 
   if (!player) {
     displayText.value = 'No hay jugador en esta posición'
@@ -57,7 +50,7 @@ function revealRole() {
 function nextPlayer() {
   currentIndex.value++
 
-  if (currentIndex.value >= players.length) {
+  if (currentIndex.value >= players.value.length) {
     phase.value = 'game'
     return
   }
@@ -114,6 +107,25 @@ const cancelDelete = () => {
     new CustomEvent('vue:modal-close')
   )
 }
+
+onMounted(() => {
+  const playersQuery = route.query.players
+  if (playersQuery && typeof playersQuery === 'string') {
+    const playerNames = JSON.parse(playersQuery) as string[]
+    
+    // Convierte los nombres a objetos Player
+    const impostorIndex = Math.floor(Math.random() * playerNames.length)
+    players.value = playerNames.map((name, index) => ({
+      name,
+      isImpostor: index === impostorIndex,
+      isActive: true,
+      word: 'lentes' // O tu lógica para palabras
+    }))
+
+    gameState.players = players.value
+    coverRole()
+  }
+})
 
 onMounted(() => {
   window.addEventListener('phaser:player-clicked', onPlayerClicked)
