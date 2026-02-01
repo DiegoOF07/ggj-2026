@@ -6,6 +6,7 @@ import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
 import { useRouter, useRoute } from 'vue-router'
 import { words } from '../../data/words.ts'
+import { playClick } from '../../game/audio.ts'
 
 const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
@@ -61,6 +62,7 @@ function revealRole() {
     impostorReveal.value = ''
   }
 
+  playClick()
   revealed.value = true
 }
 
@@ -72,6 +74,7 @@ function nextPlayer() {
     return
   }
   coverRole()
+  playClick()
 }
 
 coverRole()

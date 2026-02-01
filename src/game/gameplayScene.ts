@@ -146,7 +146,7 @@ export class GameplayScene extends Phaser.Scene {
     
     const fg = this.add.image(640, 360, 'foreground');
     fg.setScale(scale)
-    this.showToast('Di una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.')
+    this.showToast('Menciona una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.')
   }
 
   showToast(message: string) {
@@ -242,7 +242,7 @@ export class GameplayScene extends Phaser.Scene {
 
     const text = this.add
       .text(width / 2, height / 2 - 40, `¿Desenmascarar a ${player.name}?`, {
-        fontSize: '18px',
+        fontSize: '30px',
         color: '#000000'
       })
       .setOrigin(0.5)

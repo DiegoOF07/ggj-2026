@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { playClick, playMenuSong } from '../../game/audio'
 
 const router = useRouter()
 
-
-
-
 const goToSettings = () => {
+  playClick()
+  playMenuSong()
   router.push('/settings')
 }
 
