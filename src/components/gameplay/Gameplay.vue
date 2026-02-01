@@ -12,6 +12,7 @@ const currentIndex = ref(0)
 const revealed = ref(false)
 const displayText = ref('')
 const displayWord = ref('')
+const impostorReveal = ref('')
 const wordsData = ref()
 
 const router = useRouter()
@@ -34,6 +35,7 @@ function getRandomWords(data: { category: string; words: string[] }[]) {
 
 
 function coverRole() {
+  impostorReveal.value = ''
   const player: Player | undefined = players.value[currentIndex.value]
   if (player) {
     displayText.value = player.name
@@ -53,8 +55,10 @@ function revealRole() {
   // Si es impostor, mostrar ???
   if (player.isImpostor) {
     displayWord.value = `?????`
+    impostorReveal.value = `Tu eres el impostor! SILENCIO!`
   } else {
     displayWord.value = player.word
+    impostorReveal.value = ''
   }
 
   revealed.value = true
@@ -153,8 +157,9 @@ onUnmounted(() => {
     <div v-if="phase === 'presentation'" class="presentation-phase">
       <h1 class="name">{{ displayText }}</h1>
       <h1 class="word">{{ displayWord }}</h1>
-      <button v-if="!revealed" @click="revealRole">Revelar</button>
-      <button v-else @click="nextPlayer">Siguiente</button>
+      <h1 class="impostor">{{ impostorReveal }}</h1>
+      <button v-if="!revealed" @click="revealRole" class="btn">Revelar</button>
+      <button v-else @click="nextPlayer" class="btn">Siguiente</button>
     </div>
     <div v-else>
       <div id="phaser-container"></div>
@@ -196,5 +201,30 @@ onUnmounted(() => {
     text-align: center;
     color: black;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+
+    .impostor{
+    display: block;
+    width: 760px;
+    position: absolute;
+    top: 67.5%;
+    left: 40.3%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    text-align: center;
+    color: rgb(255, 0, 0);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+
+  .btn{
+    position: absolute;
+    top: 46%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background-color: blueviolet;
+    color: black;
   }
 </style>
