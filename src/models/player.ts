@@ -2,5 +2,6 @@ export interface Player {
   name: string
   isImpostor: boolean
   isActive: boolean
-  word: string | null
+  word: string
+  maskKey?: string
 }

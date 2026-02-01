@@ -76,6 +76,11 @@ watch(phase, (newPhase) => {
       type: Phaser.AUTO,
       width: 640*2,
       height: 360*2,
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        parent: 'game-container'
+      },
       parent: 'phaser-container',
       backgroundColor: '#ffff',
       scene: [

@@ -3,7 +3,9 @@ import type { Player } from '../models/player.ts'
 
 export class GameplayScene extends Phaser.Scene {
   players: Player[]
+  playerContainers = new Map<string, Phaser.GameObjects.Container>()
   playerSprites = new Map<string, Phaser.GameObjects.Sprite>()
+  maskSprites = new Map<string, Phaser.GameObjects.Sprite>()
   modalContainer?: Phaser.GameObjects.Container
   modalOpen = false
 
@@ -14,15 +16,32 @@ export class GameplayScene extends Phaser.Scene {
 
   preload() {
     this.load.image('player', '../../src/assets/Test1/Player01.png')
+    this.load.image('background', '../../src/assets/Background/Background01.png')
+    this.load.image('foreground', '../../src/assets/Background/Foreground1.png')
+
+    for (let i = 1; i <= 8; i++) {
+      this.load.image(
+        `mask${i}`,
+        `../../src/assets/masks/mask${i}.png`
+      )
+    }
   }
 
   create() {
-    const MAX_VISIBLE = 7
+    const bg = this.add.image(640, 360, 'background');
+
+    const scaleX = this.scale.width / bg.width
+    const scaleY = this.scale.height / bg.height
+
+    const scale = Math.max(scaleX, scaleY)
+    bg.setScale(scale)
+
+    const MAX_VISIBLE = 8
     const visiblePlayers = this.players.slice(0, MAX_VISIBLE)
 
     const spriteWidth = 125
     const spriteHeight = 250
-    const spacing = 20
+    const spacing = 10
 
     const totalWidth =
       visiblePlayers.length * spriteWidth +
@@ -34,36 +53,64 @@ export class GameplayScene extends Phaser.Scene {
     visiblePlayers.forEach((player, index) => {
       const x = startX + index * (spriteWidth + spacing)
 
-      const sprite = this.add
-        .sprite(x + spriteWidth / 2, centerY, 'player')
-        .setInteractive({ useHandCursor: true })
+      player.maskKey ??= this.getRandomMask()
 
-      sprite.setDisplaySize(spriteWidth, spriteHeight)
+      const playerSprite = this.add.sprite(0, 0, 'player')
+      playerSprite.setDisplaySize(spriteWidth, spriteHeight)
+      playerSprite.setScale(1.5)
 
-      // sprite.on('pointerover', () => {
-      //   sprite.setTint(0xff0000)
-      // })
+      const maskSprite = this.add.sprite(0, 0, player.maskKey)
+      maskSprite.setDisplaySize(spriteWidth, spriteHeight)
+      maskSprite.setScale(1.5)
 
-      // sprite.on('pointerout', () => {
-      //   sprite.clearTint()
-      // })
+      const playerContainer = this.add.container(
+        x + spriteWidth / 2,
+        centerY + 70,
+        [playerSprite, maskSprite]
+      )
 
-      sprite.on('pointerdown', () => {
-        if (this.modalOpen) return
+      playerContainer.setSize(spriteWidth, spriteHeight)
+      playerContainer.setInteractive(
+        new Phaser.Geom.Rectangle(
+          -spriteWidth / 2,
+          -spriteHeight / 2,
+          spriteWidth,
+          spriteHeight
+        ),
+        Phaser.Geom.Rectangle.Contains
+      )
+      playerContainer.on('pointerover', () => {
+        if (!player.isActive || this.modalOpen) return
+        playerContainer.setScale(1.05)
+      })
+
+      playerContainer.on('pointerout', () => {
+        playerContainer.setScale(1)
+      })
+
+      playerContainer.on('pointerdown', () => {
+        if (!player.isActive || this.modalOpen) return
         this.openConfirmModal(player)
       })
 
-      sprite.setData('playerName', player.name)
-      this.playerSprites.set(player.name, sprite)
-
+      this.playerContainers.set(player.name, playerContainer)
+      this.maskSprites.set(player.name, maskSprite)
+      
       this.add
-        .text(sprite.x, sprite.y + spriteHeight / 2 + 10, player.name, {
-          fontSize: '14px',
+        .text(playerContainer.x, playerContainer.y + spriteHeight / 2 + 80, player.name, {
+          fontSize: '18px',
           color: '#ffffff'
         })
         .setOrigin(0.5, 0)
     })
     
+    const fg = this.add.image(640, 360, 'foreground');
+    fg.setScale(scale)
+  }
+
+  getRandomMask(): string {
+    const index = Phaser.Math.Between(1, 8)
+    return `mask${index}`
   }
 
   onDeletePlayer = (event: Event) => {
@@ -138,7 +185,7 @@ export class GameplayScene extends Phaser.Scene {
           detail: player.name
         })
       )
-      this.disablePlayer(player.name)
+      this.removePlayer(player.name)
       this.closeModal()
     })
 
@@ -168,12 +215,24 @@ export class GameplayScene extends Phaser.Scene {
     ])
   }
 
-  disablePlayer(name: string) {
-    this.children.each((child: any) => {
-      if (child.getData && child.getData('playerName') === name) {
-        child.setTint(0x555555)
-        child.disableInteractive()
-      }
-    })
+  getPlayer(name: string): Player | undefined {
+    return this.players.find(p => p.name === name)
+  }
+
+  removePlayer(name: string) {
+    const player = this.getPlayer(name)
+    const container = this.playerContainers.get(name)
+    const mask = this.maskSprites.get(name)
+
+    if (!player || !container) return
+
+    player.isActive = false
+
+    mask?.destroy()
+    this.maskSprites.delete(name)
+
+    container
+      .setAlpha(0.6)
+      .disableInteractive()
   }
 }
