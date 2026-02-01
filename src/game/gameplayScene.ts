@@ -9,6 +9,17 @@ export class GameplayScene extends Phaser.Scene {
   modalContainer?: Phaser.GameObjects.Container
   modalOpen = false
 
+  sounds!: {
+    click: Phaser.Sound.BaseSound
+    click_grave: Phaser.Sound.BaseSound
+    victoria: Phaser.Sound.BaseSound
+    derrota: Phaser.Sound.BaseSound
+    menu: Phaser.Sound.BaseSound
+    juego1: Phaser.Sound.BaseSound
+    juego2: Phaser.Sound.BaseSound
+    sospechoso: Phaser.Sound.BaseSound
+  }
+
   constructor(players: Player[]) {
     super('GameplayScene')
     this.players = players
@@ -18,6 +29,16 @@ export class GameplayScene extends Phaser.Scene {
     this.load.image('player', '../../src/assets/Test1/Player01.png')
     this.load.image('background', '../../src/assets/Background/Background01.png')
     this.load.image('foreground', '../../src/assets/Background/Foreground1.png')
+    
+
+    this.load.audio('click', '../../src/assets/Audio/Boton_1.wav')
+    this.load.audio('click_grave', '../../src/assets/Audio/Boton_2.wav')
+    this.load.audio('victoria', '../../src/assets/Audio/Stinger_Victoria.wav')
+    this.load.audio('derrota', '../../src/assets/Audio/Stinger_Derrota.wav')
+    this.load.audio('menu', '../../src/assets/Audio/Tema_Menu .wav')
+    this.load.audio('juego1', '../../src/assets/Audio/Tema_Gameplay_01.wav')
+    this.load.audio('juego2', '../../src/assets/Audio/Tema_Gameplay_02.wav')
+    this.load.audio('sospechoso', '../../src/assets/Audio/Mouse_sobre_sospechoso.mp3')
 
     for (let i = 1; i <= 8; i++) {
       this.load.image(
@@ -29,6 +50,19 @@ export class GameplayScene extends Phaser.Scene {
 
   create() {
     const bg = this.add.image(640, 360, 'background');
+
+     this.sounds = {
+      click: this.sound.add('click', { loop: false, volume: 0.75 }),
+      click_grave: this.sound.add('click_grave'),
+      victoria: this.sound.add('victoria'),
+      derrota: this.sound.add('derrota'),
+      menu: this.sound.add('menu', { loop: true, volume: 0.5 }),
+      juego1: this.sound.add('juego1', { loop: false, volume: 0.5 }),
+      juego2: this.sound.add('juego2', { loop: true, volume: 0.5 }),
+      sospechoso: this.sound.add('sospechoso', {loop: false, volume: 1} )
+    }
+    this.sounds.juego1.play()
+    this.sounds.juego2.play()
 
     const scaleX = this.scale.width / bg.width
     const scaleY = this.scale.height / bg.height
@@ -82,6 +116,7 @@ export class GameplayScene extends Phaser.Scene {
       playerContainer.on('pointerover', () => {
         if (!player.isActive || this.modalOpen) return
         playerContainer.setScale(1.05)
+        this.sounds.sospechoso.play()
       })
 
       playerContainer.on('pointerout', () => {
@@ -180,6 +215,8 @@ export class GameplayScene extends Phaser.Scene {
       .setOrigin(0.5)
 
     confirmBtn.on('pointerdown', () => {
+      this.sounds.click.play()
+      
       window.dispatchEvent(
         new CustomEvent('game:player-eliminated', {
           detail: player.name
@@ -201,6 +238,7 @@ export class GameplayScene extends Phaser.Scene {
       .setOrigin(0.5)
 
     cancelBtn.on('pointerdown', () => {
+      this.sounds.click.play()
       this.closeModal()
     })
 
