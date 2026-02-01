@@ -1,4 +1,4 @@
-[
+export const words = [
   {
     "category": "Naturaleza",
     "words": ["agua", "plantas", "flores"]

@@ -6,12 +6,14 @@ import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
 import ConfirmationModal from '../common/ConfirmationModal.vue'
 import { useRoute } from 'vue-router'
+import { words } from '../../data/words.ts'
 
 
 const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
 const revealed = ref(false)
 const displayText = ref('')
+const wordsData = ref()
 
 const route = useRoute()
 const players = ref<Player[]>([])
@@ -20,6 +22,20 @@ const showModal = ref(false)
 const selectedPlayerName = ref<string | null>(null)
 
 let phaserGame: Phaser.Game | null = null
+
+function getRandomWords(data: { category: string; words: string[] }[]) {
+    const randomCategory = data[Math.floor(Math.random() * data.length)];
+    
+    // Obtener una palabra aleatoria de las palabras de esa categoría
+    const words = randomCategory?.words || [];
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+    
+    return {
+        category: randomCategory?.category,
+        word: randomWord
+    };
+}
+
 
 function coverRole() {
   const player: Player | undefined = players.value[currentIndex.value]
@@ -110,6 +126,7 @@ const cancelDelete = () => {
 
 onMounted(() => {
   const playersQuery = route.query.players
+  wordsData.value = getRandomWords(words);
   if (playersQuery && typeof playersQuery === 'string') {
     const playerNames = JSON.parse(playersQuery) as string[]
     
@@ -119,7 +136,7 @@ onMounted(() => {
       name,
       isImpostor: index === impostorIndex,
       isActive: true,
-      word: 'lentes' // O tu lógica para palabras
+      word: index === impostorIndex ? wordsData.value.category : wordsData.value.word
     }))
 
     gameState.players = players.value
