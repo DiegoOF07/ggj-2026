@@ -212,7 +212,7 @@ onUnmounted(() => {
     transform: translate(-50%, -50%);
     font-size: 1rem;
     text-align: center;
-    color: rgb(255, 0, 0);
+    color: #90220A;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   }
 

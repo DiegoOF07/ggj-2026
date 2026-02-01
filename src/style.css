@@ -13,9 +13,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+  font-family: 'Unmasked';
+  src:
+    url('@/assets/fonts/Flipps-Regular.otf') format('otf'),
+    url('@/assets/fonts/Harmonic.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 *{
   margin: 0;
   padding: 0;
+  font-family: 'Harmonic';
 }
 
 
