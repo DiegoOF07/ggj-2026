@@ -155,11 +155,14 @@ onUnmounted(() => {
 <template>
   <div>
     <div v-if="phase === 'presentation'" class="presentation-phase">
+      <div v-if="!revealed">
+        <img src="../../assets/TelegramaOverlay.png" alt="Overlay for covering word" class="overlay">
+      </div>
       <h1 class="name">{{ displayText }}</h1>
       <h1 class="word">{{ displayWord }}</h1>
       <h1 class="impostor">{{ impostorReveal }}</h1>
-      <button v-if="!revealed" @click="revealRole" class="btn">Revelar</button>
-      <button v-else @click="nextPlayer" class="btn">Siguiente</button>
+      <button v-if="!revealed" @click="revealRole" class="btn-revelar"></button>
+      <button v-else @click="nextPlayer" class="btn-siguiente"></button>
     </div>
     <div v-else>
       <div id="phaser-container"></div>
@@ -216,15 +219,57 @@ onUnmounted(() => {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   }
 
-  .btn{
+  .btn-revelar{
+    width: 150px;
+    height: 150px;
     position: absolute;
     top: 46%;
     left: 85%;
     transform: translate(-50%, -50%);
-    padding: 10px 20px;
-    font-size: 1.5rem;
+    background-image: url('@/assets/Botones/BotonRevelar01.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
     cursor: pointer;
-    background-color: blueviolet;
-    color: black;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .btn-revelar:hover {
+    background-image: url('@/assets/Botones/BotonRevelar01Hover.png');
+  }
+
+  .btn-siguiente{
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    top: 46%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    background-image: url('@/assets/Botones/BotonSiguiente01.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .btn-siguiente:hover {
+    background-image: url('@/assets/Botones/BotonSiguiente01Hover.png');
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 10;
+    pointer-events: none;
   }
 </style>
