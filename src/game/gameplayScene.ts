@@ -26,9 +26,14 @@ export class GameplayScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('player', '../../src/assets/Test1/Player01.png')
+    this.load.image('player', '../../src/assets/PlayerV2.png')
     this.load.image('background', '../../src/assets/Background/Background01.png')
     this.load.image('foreground', '../../src/assets/Background/Foreground1.png')
+    this.load.image('modal-panel', '../../src/assets/FondoPapel.png')
+    this.load.image('btn-confirm', '../../src/assets/Botones/BotonConfirmar01.png')
+    this.load.image('btn-confirm-hover', '../../src/assets/Botones/BotonConfirmar01Hover.png')
+    this.load.image('btn-cancel', '../../src/assets/Botones/BotonCancelar01.png')
+    this.load.image('btn-cancel-hover', '../../src/assets/Botones/BotonCancelar01Hover.png')
     
 
     this.load.audio('click', '../../src/assets/Audio/Boton_1.wav')
@@ -231,25 +236,28 @@ export class GameplayScene extends Phaser.Scene {
       .rectangle(width / 2, height / 2, width, height, 0x000000, 0.6)
       .setInteractive()
 
-    const panel = this.add.rectangle(width / 2, height / 2, 360, 200, 0x1e293b)
+    const panel = this.add
+      .image(width / 2, height / 2, 'modal-panel')
+      .setOrigin(0.5)
 
     const text = this.add
       .text(width / 2, height / 2 - 40, `¿Desenmascarar a ${player.name}?`, {
         fontSize: '18px',
-        color: '#ffffff'
+        color: '#000000'
       })
       .setOrigin(0.5)
 
     const confirmBtn = this.add
-      .rectangle(width / 2 - 80, height / 2 + 50, 120, 40, 0x16a34a)
+      .image(width / 2 - 110, height / 2 + 50, 'btn-confirm')
       .setInteractive({ useHandCursor: true })
 
-    const confirmText = this.add
-      .text(confirmBtn.x, confirmBtn.y, 'Confirmar', {
-        fontSize: '14px',
-        color: '#ffffff'
-      })
-      .setOrigin(0.5)
+    confirmBtn.on('pointerover', () => {
+      confirmBtn.setTexture('btn-confirm-hover')
+    })
+
+    confirmBtn.on('pointerout', () => {
+      confirmBtn.setTexture('btn-confirm')
+    })
 
     confirmBtn.on('pointerdown', () => {
       this.sounds.click.play()
@@ -264,29 +272,28 @@ export class GameplayScene extends Phaser.Scene {
     })
 
     const cancelBtn = this.add
-      .rectangle(width / 2 + 80, height / 2 + 50, 120, 40, 0xdc2626)
+      .image(width / 2 + 110, height / 2 + 50, 'btn-cancel')
       .setInteractive({ useHandCursor: true })
-
-    const cancelText = this.add
-      .text(cancelBtn.x, cancelBtn.y, 'Cancelar', {
-        fontSize: '14px',
-        color: '#ffffff'
-      })
-      .setOrigin(0.5)
 
     cancelBtn.on('pointerdown', () => {
       this.sounds.click.play()
       this.closeModal()
     })
 
+    cancelBtn.on('pointerover', () => {
+      cancelBtn.setTexture('btn-cancel-hover')
+    })
+
+    cancelBtn.on('pointerout', () => {
+      cancelBtn.setTexture('btn-cancel')
+    })
+
     this.modalContainer = this.add.container(0, 0, [
       overlay,
       panel,
-      text,
       confirmBtn,
-      confirmText,
       cancelBtn,
-      cancelText
+      text,
     ])
   }
 

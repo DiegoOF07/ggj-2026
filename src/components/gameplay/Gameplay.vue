@@ -39,7 +39,7 @@ function coverRole() {
   const player: Player | undefined = players.value[currentIndex.value]
   if (player) {
     displayText.value = player.name
-    displayWord.value = '' // Limpiar la palabra
+    displayWord.value = ''
   }
   revealed.value = false
 }
