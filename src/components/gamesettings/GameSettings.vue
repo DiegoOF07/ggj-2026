@@ -1,14 +1,22 @@
 <template>
   <div class="screen">
-    <h1 class="title">Detrás de la máscara</h1>
-    <p class="subtitle">Ingresa los nombres o apodos de los jugadores</p>
-
     <div class="form-wrapper">
 
+      <h1 class="title">Detrás de la máscara</h1>
+      <p class="subtitle">Ingresa los nombres o apodos de los jugadores</p>
+
       <div class="controls">
-        <button @click="decrease" :disabled="playersCount <= minPlayers">−</button>
+        <button
+          class="icon-btn minus"
+          @click="decrease"
+          :disabled="playersCount <= minPlayers"
+        />
         <span>{{ playersCount }}</span>
-        <button @click="increase" :disabled="playersCount >= maxPlayers">+</button>
+        <button
+          class="icon-btn plus"
+          @click="increase"
+          :disabled="playersCount >= maxPlayers"
+        />
       </div>
 
       <div class="inputs">
@@ -26,15 +34,15 @@
           <h2>Faltan nombres</h2>
           <p>Ingresa todos los nombres antes de continuar.</p>
 
-          <button @click="showAlert = false">
-            Entendido
-          </button>
+          <button
+            class="alert-btn"
+            @click="showAlert = false"
+          />
         </div>
       </div>
 
-      <button class="continue" @click="continueGame">
-        Continuar
-      </button>
+      <button class="continue-btn" @click="continueGame" />
+
     </div>
   </div>
 </template>
@@ -45,21 +53,16 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-// Límites
 const minPlayers = 3
 const maxPlayers = 6
 
 const playersCount = ref(4)
 const players = ref(Array(playersCount.value).fill(''))
-
 const showAlert = ref(false)
 
 watch(playersCount, (newCount, oldCount) => {
-  if (newCount > oldCount) {
-    players.value.push('')
-  } else {
-    players.value.splice(newCount)
-  }
+  if (newCount > oldCount) players.value.push('')
+  else players.value.splice(newCount)
 })
 
 const increase = () => {
@@ -71,183 +74,158 @@ const decrease = () => {
 }
 
 const continueGame = () => {
-  const hasEmpty = players.value.some(name => name.trim() === '')
-  if (hasEmpty) {
+  if (players.value.some(p => p.trim() === '')) {
     showAlert.value = true
     return
   }
 
-  const playerNames = players.value.filter(name => name.trim() !== '')
   router.push({
     path: '/gameplay',
-    query: { players: JSON.stringify(playerNames) }
+    query: { players: JSON.stringify(players.value) }
   })
 }
 </script>
 
+
 <style scoped>
 .screen {
   min-height: 100vh;
-  padding: 24px;
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-
   padding-top: 10vh;
 
+  display: flex;
+  justify-content: center;
+
   background:
-    linear-gradient(
-      rgba(2, 6, 23, 0.5),
-      rgba(2, 6, 23, 0.7)
-    ),
+    linear-gradient(rgba(2,6,23,.5), rgba(2,6,23,.7)),
     url('@/assets/Background/Background01.png');
 
   background-size: cover;
-  background-position: center 65%;
-  background-repeat: no-repeat;
-
+  background-position: center;
   color: white;
-}
-
-.title {
-  font-size: 2.2rem;
-  margin-bottom: 6px;
-  letter-spacing: 1.5px;
-}
-
-.subtitle {
-  margin-bottom: 32px;
-  opacity: 0.85;
-  text-align: center;
 }
 
 .form-wrapper {
   width: 100%;
   max-width: 420px;
+  padding: 24px;
+  border-radius: 20px;
 
   background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(4px);
+  text-align: center;
+}
 
-  padding: 24px;
-  border-radius: 20px;
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  margin-bottom: 20px;
+  opacity: 0.85;
 }
 
 .controls {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: 200px auto 200px; 
+  gap: 8px;                              
   align-items: center;
+  justify-items: center;                
+  margin-bottom: 15px;
 }
 
-.controls button {
-  height: 35px;
-  font-size: 1.6rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+.icon-btn {
+  width: 72px;            
+  height: 72px;
+  padding: 0;
+  border: none;
+  background-color: transparent; 
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;   
   cursor: pointer;
 }
 
-.controls button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+
+.icon-btn.minus {
+  background-image: url('@/assets/Botones/BotonMenos01.png');
+}
+.icon-btn.minus:hover {
+  background-image: url('@/assets/Botones/BotonMenos01Hover.png');
 }
 
-.controls span {
-  text-align: center;
-  font-weight: 600;
-  font-size: 1.2rem;
+.icon-btn.plus {
+  background-image: url('@/assets/Botones/BotonMas01.png');
+}
+.icon-btn.plus:hover {
+  background-image: url('@/assets/Botones/BotonMas01Hover.png');
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .inputs input {
   padding: 14px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(2, 6, 23, 0.6);
+  border: none;
+  background: rgba(2,6,23,.6);
   color: white;
 }
 
-.inputs input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.continue {
+.continue-btn {
   width: 100%;
+  height: 64px;
   margin-top: 28px;
-  padding: 16px;
-  font-weight: 600;
-  border-radius: 14px;
   border: none;
+  background: url('@/assets/Botones/BotonContinuar01.png') center/contain no-repeat;
   cursor: pointer;
-
-  background: linear-gradient(135deg, #5B4B8A, #564686);
-  color: #ffffff;
 }
 
-.continue:hover {
-  filter: brightness(1.05);
+.continue-btn:hover {
+  background-image: url('@/assets/Botones/BotonContinuar01Hover.png');
 }
 
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0,0,0,.55);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
 }
 
 .alert-card {
-  background: rgba(15, 23, 42, 0.95);
-  width: 90%;
-  max-width: 320px;
-  padding: 24px;
-  border-radius: 18px;
+  width: 320px;
+  padding: 28px;
   text-align: center;
-  animation: pop 0.2s ease-out;
-  color: white;
+
+  background: url('@/assets/FondoPapel.png') center/cover no-repeat;
+  animation: pop .2s ease-out;
+  color: #1f2933;
 }
 
-.alert-card h2 {
-  margin-bottom: 8px;
-}
-
-.alert-card p {
-  margin-bottom: 20px;
-  opacity: 0.85;
-}
-
-.alert-card button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
+.alert-btn {
+  width: 180px;
+  height: 56px;
   border: none;
-  font-weight: 600;
+  background: url('@/assets/Botones/BotonEntendido01.png') center/contain no-repeat;
   cursor: pointer;
-  background: #5B4B8A;
-  color: #ffffff;
+}
+
+.alert-btn:hover {
+  background-image: url('@/assets/Botones/BotonEntendido01Hover.png');
 }
 
 @keyframes pop {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(.9); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
 }
 </style>
