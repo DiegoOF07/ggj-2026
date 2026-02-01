@@ -36,7 +36,7 @@
 
           <button
             class="alert-btn"
-            @click="showAlert = false"
+            @click="showAlert = false; playClick()"
           />
         </div>
       </div>
@@ -50,6 +50,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { playClick } from '../../game/audio'
 
 const router = useRouter()
 
@@ -67,13 +68,16 @@ watch(playersCount, (newCount, oldCount) => {
 
 const increase = () => {
   if (playersCount.value < maxPlayers) playersCount.value++
+  playClick()
 }
 
 const decrease = () => {
   if (playersCount.value > minPlayers) playersCount.value--
+  playClick()
 }
 
 const continueGame = () => {
+  playClick()
   if (players.value.some(p => p.trim() === '')) {
     showAlert.value = true
     return
