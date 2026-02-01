@@ -40,7 +40,7 @@ export class GameplayScene extends Phaser.Scene {
     this.load.audio('juego2', '../../src/assets/Audio/Tema_Gameplay_02.wav')
     this.load.audio('sospechoso', '../../src/assets/Audio/Mouse_sobre_sospechoso.mp3')
 
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 10; i++) {
       this.load.image(
         `mask${i}`,
         `../../src/assets/masks/mask${i}.png`
@@ -141,10 +141,58 @@ export class GameplayScene extends Phaser.Scene {
     
     const fg = this.add.image(640, 360, 'foreground');
     fg.setScale(scale)
+    this.showToast('Di una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.', 5000)
   }
 
+  showToast(message: string, duration = 5000) {
+    const { width } = this.scale
+
+    const padding = 20
+    const toastY = 80
+
+    const text = this.add.text(0, 0, message, {
+      fontSize: '18px',
+      color: '#ffffff',
+      align: 'center',
+      wordWrap: { width: 500 }
+    }).setOrigin(0.5)
+
+    const bg = this.add.rectangle(
+      0,
+      0,
+      text.width + padding * 2,
+      text.height + padding * 2,
+      0x020617,
+      0.85
+    )
+
+    const toast = this.add.container(width / 2, toastY, [bg, text])
+    toast.setAlpha(0)
+    toast.setY(toastY - 20)
+
+    this.tweens.add({
+      targets: toast,
+      alpha: 1,
+      y: toastY,
+      duration: 400,
+      ease: 'Sine.easeOut'
+    })
+
+    this.time.delayedCall(duration, () => {
+      this.tweens.add({
+        targets: toast,
+        alpha: 0,
+        y: toastY - 20,
+        duration: 400,
+        ease: 'Sine.easeIn',
+        onComplete: () => toast.destroy()
+      })
+    })
+  }
+
+
   getRandomMask(): string {
-    const index = Phaser.Math.Between(1, 8)
+    const index = Phaser.Math.Between(1, 10)
     return `mask${index}`
   }
 
