@@ -16,8 +16,8 @@
 @font-face {
   font-family: 'Unmasked';
   src:
-    url('@/assets/fonts/Flipps-Regular.otf') format('otf'),
-    url('@/assets/fonts/Harmonic.ttf') format('ttf');
+    url('./assets/fonts/Flipps-Regular.otf') format('otf'),
+    url('./assets/fonts/Harmonic.ttf') format('ttf');
   font-weight: normal;
   font-style: normal;
 }
