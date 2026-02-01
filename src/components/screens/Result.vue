@@ -2,6 +2,13 @@
   <transition name="fade" mode="out-in" appear>
     <div class="screen" :key="resultType">
       <h1 class="title">{{ title }}</h1>
+
+      <img
+        class="result-image"
+        :src="imageSrc"
+        alt="Resultado"
+      />
+
       <p class="subtitle">{{ subtitle }}</p>
 
       <button class="continue" @click="goHome">
@@ -11,7 +18,6 @@
   </transition>
 </template>
 
-
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -19,11 +25,9 @@ import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
+// Resultado recibido por query
 const resultType = computed(() => route.query.result || 'defeat')
 
-const title = computed(() =>
-  resultType.value === 'victory' ? 'Victoria' : 'Derrota'
-)
 
 const subtitle = computed(() =>
   resultType.value === 'victory'
@@ -31,6 +35,14 @@ const subtitle = computed(() =>
     : 'El impostor no fue encontrado a tiempo'
 )
 
+// Imagen dinámica
+const imageSrc = computed(() =>
+  resultType.value === 'victory'
+    ? new URL('@/assets/Background/FondoVictoria.png', import.meta.url).href
+    : new URL('@/assets/Background/FondoDerrota.png', import.meta.url).href
+)
+
+// Navegación
 const goHome = () => {
   router.push('/')
 }
@@ -47,30 +59,27 @@ const goHome = () => {
   justify-content: center;
   text-align: center;
 
-  background:
-    linear-gradient(
-      rgba(2, 6, 23, 0.55),
-      rgba(2, 6, 23, 0.75)
-    ),
-    url('@/assets/Background/Background01.png');
-
-  background-size: cover;
-  background-position: center 65%;
-  background-repeat: no-repeat;
-
+  background: #101018;
   color: white;
 }
 
-.title {
-  font-size: 3rem;
-  margin-bottom: 12px;
-  letter-spacing: 2px;
+.result-image {
+  width: min(105vw, 540px);
+  margin: 1px 0;
+
+  opacity: 0;
+  animation: fade-up 1.4s ease forwards;
+  animation-delay: 0.6s;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
   opacity: 0.85;
+
+  opacity: 0;
+  animation: fade-up 1.2s ease forwards;
+  animation-delay: 1.3s;
 }
 
 .continue {
@@ -81,25 +90,23 @@ const goHome = () => {
   border: none;
   cursor: pointer;
 
-  background: linear-gradient(135deg, #5B4B8A, #5B4B8A);
+  background: linear-gradient(135deg, #5B4B8A, #3A2D5F);
   color: white;
 
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
-.continue:hover {
-  filter: brightness(1.1);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1.8s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
   opacity: 0;
+  animation: fade-up 1.2s ease forwards;
+  animation-delay: 2.0s;
 }
 
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 </style>
