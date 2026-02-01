@@ -76,6 +76,8 @@ watch(phase, (newPhase) => {
       type: Phaser.AUTO,
       width: 640*2,
       height: 360*2,
+      pixelArt: true,
+      antialias: true,
       scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

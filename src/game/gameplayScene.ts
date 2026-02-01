@@ -70,12 +70,12 @@ export class GameplayScene extends Phaser.Scene {
     const scale = Math.max(scaleX, scaleY)
     bg.setScale(scale)
 
-    const MAX_VISIBLE = 8
+    const MAX_VISIBLE = 6
     const visiblePlayers = this.players.slice(0, MAX_VISIBLE)
 
     const spriteWidth = 125
     const spriteHeight = 250
-    const spacing = 10
+    const spacing = 25
 
     const totalWidth =
       visiblePlayers.length * spriteWidth +
@@ -91,15 +91,15 @@ export class GameplayScene extends Phaser.Scene {
 
       const playerSprite = this.add.sprite(0, 0, 'player')
       playerSprite.setDisplaySize(spriteWidth, spriteHeight)
-      playerSprite.setScale(1.5)
+      playerSprite.setScale(2.0)
 
       const maskSprite = this.add.sprite(0, 0, player.maskKey)
       maskSprite.setDisplaySize(spriteWidth, spriteHeight)
-      maskSprite.setScale(1.5)
+      maskSprite.setScale(2.0)
 
       const playerContainer = this.add.container(
         x + spriteWidth / 2,
-        centerY + 70,
+        centerY + 30,
         [playerSprite, maskSprite]
       )
 
@@ -266,7 +266,15 @@ export class GameplayScene extends Phaser.Scene {
 
     player.isActive = false
 
-    mask?.destroy()
+    this.tweens.add({
+      targets: mask,
+      angle: { from: -5, to: 5 },
+      alpha: 0,
+      y: mask!.y + 20,
+      duration: 300,
+      onComplete: () => mask?.destroy()
+    })
+
     this.maskSprites.delete(name)
 
     container
