@@ -1,11 +1,31 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
+const currentFrame = ref(0)
+let interval: number | null = null
+
+const frames = [
+  new URL('@/assets/play/72px/play01.png', import.meta.url).href,
+  new URL('@/assets/play/72px/play02.png', import.meta.url).href,
+  new URL('@/assets/play/72px/play03.png', import.meta.url).href,
+  new URL('@/assets/play/72px/play04.png', import.meta.url).href,
+  new URL('@/assets/play/72px/play05.png', import.meta.url).href,
+]
+
+const startAnimation = () => {
+  interval = window.setInterval(() => {
+    currentFrame.value = (currentFrame.value + 1) % frames.length
+  }, 90)
+}
+
 const goToSettings = () => {
   router.push('/settings')
 }
+
+onMounted(startAnimation)
 </script>
 
 <template>
@@ -14,8 +34,8 @@ const goToSettings = () => {
       Unmasked
     </h1>
 
-    <button class="play-btn" @click="goToSettings">
-      <span class="material-symbols-outlined icon">play_arrow</span>
+    <button @click="goToSettings">
+      <img :src="frames[currentFrame]" alt="Play"/>
     </button>
 
     <p class="history">
@@ -49,27 +69,12 @@ const goToSettings = () => {
   color: #22c55e;
 }
 
-.play-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2.5rem;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: white;
-  font-weight: bold;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
 .icon {
   font-size: 1.6rem;
 }
 
-.play-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(34, 197, 94, 0.4);
+button {
+  background-color: transparent;
+  border: none;
 }
 </style>
