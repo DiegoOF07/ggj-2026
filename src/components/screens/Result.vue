@@ -14,12 +14,11 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
 
-// Leer el resultado de la query
 const resultType = computed(() => route.query.result || 'defeat')
 
 const title = computed(() =>
@@ -41,42 +40,66 @@ const goHome = () => {
 .screen {
   min-height: 100vh;
   padding: 24px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+
+  background:
+    linear-gradient(
+      rgba(2, 6, 23, 0.55),
+      rgba(2, 6, 23, 0.75)
+    ),
+    url('@/assets/Background/Background01.png');
+
+  background-size: cover;
+  background-position: center 65%;
+  background-repeat: no-repeat;
+
+  color: white;
 }
 
-/* Texto */
 .title {
   font-size: 3rem;
   margin-bottom: 12px;
+  letter-spacing: 2px;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  margin-bottom: 36px;
+  margin-bottom: 40px;
+  opacity: 0.85;
 }
 
-/* Botón */
 .continue {
-  padding: 14px 28px;
+  padding: 16px 32px;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 14px;
+  border-radius: 16px;
   border: none;
   cursor: pointer;
+
+  background: linear-gradient(135deg, #5B4B8A, #5B4B8A);
+  color: white;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.continue:hover {
+  filter: brightness(1.1);
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 2s ease;
+  transition: opacity 1.8s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
+
 
 </style>
