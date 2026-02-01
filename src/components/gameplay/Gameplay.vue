@@ -5,7 +5,7 @@ import { GameplayScene } from '../../game/gameplayScene'
 import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
 import ConfirmationModal from '../common/ConfirmationModal.vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { words } from '../../data/words.ts'
 
 
@@ -15,6 +15,7 @@ const revealed = ref(false)
 const displayText = ref('')
 const wordsData = ref()
 
+const router = useRouter()
 const route = useRoute()
 const players = ref<Player[]>([])
 
@@ -102,11 +103,48 @@ const onPlayerClicked = (event: Event) => {
 const confirmDelete = () => {
   if (!selectedPlayerName.value) return
 
+  // Encontrar al jugador que se va a eliminar
+  const playerToDelete = gameState.players.find(
+    player => player.name === selectedPlayerName.value
+  )
+
+  // Marcar como inactivo
+  gameState.players.forEach(player => {
+    if (player.name === selectedPlayerName.value) {
+      player.isActive = false
+    }
+  })
+
+  // Emitir evento para actualizar UI de Phaser
   window.dispatchEvent(
     new CustomEvent('vue:delete-player', {
       detail: selectedPlayerName.value
     })
   )
+
+  // Verificar si el juego terminó
+  const gameEnded = gameState.checkgameEnd()
+  
+  if (gameEnded && gameState.winner) {
+    // Determinar el tipo de resultado desde la perspectiva de los tripulantes
+    let resultType = 'defeat'
+    
+    if (gameState.winner === 'crewmates') {
+      // Los tripulantes ganaron = Victoria
+      resultType = 'victory'
+    } else if (gameState.winner === 'impostors') {
+      // Los impostores ganaron = Derrota
+      resultType = 'defeat'
+    }
+    
+    // Redirigir a la pantalla de resultados
+    router.push({ 
+      path: '/result',
+      query: {
+        result: resultType
+      }
+    })
+  }
 
   showModal.value = false
   selectedPlayerName.value = null

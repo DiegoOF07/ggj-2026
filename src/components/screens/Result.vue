@@ -14,18 +14,20 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-
-const resultType = 'defeat'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
+
+// Leer el resultado de la query
+const resultType = computed(() => route.query.result || 'defeat')
 
 const title = computed(() =>
-  resultType === 'victory' ? 'Victoria' : 'Derrota'
+  resultType.value === 'victory' ? 'Victoria' : 'Derrota'
 )
 
 const subtitle = computed(() =>
-  resultType === 'victory'
+  resultType.value === 'victory'
     ? 'Has encontrado al impostor'
     : 'El impostor no fue encontrado a tiempo'
 )
