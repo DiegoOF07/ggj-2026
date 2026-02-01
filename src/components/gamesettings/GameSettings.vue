@@ -144,7 +144,7 @@ const continueGame = () => {
 }
 
 .controls button {
-  height: 44px;
+  height: 35px;
   font-size: 1.6rem;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -164,11 +164,10 @@ const continueGame = () => {
   font-size: 1.2rem;
 }
 
-/* ✏️ Inputs */
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 6px;
 }
 
 .inputs input {
