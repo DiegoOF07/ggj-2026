@@ -11,6 +11,7 @@ const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
 const revealed = ref(false)
 const displayText = ref('')
+const displayWord = ref('')
 const wordsData = ref()
 
 const router = useRouter()
@@ -35,7 +36,8 @@ function getRandomWords(data: { category: string; words: string[] }[]) {
 function coverRole() {
   const player: Player | undefined = players.value[currentIndex.value]
   if (player) {
-    displayText.value = `Turno de ${player.name}. Presiona revelar`
+    displayText.value = player.name
+    displayWord.value = '' // Limpiar la palabra
   }
   revealed.value = false
 }
@@ -48,11 +50,11 @@ function revealRole() {
     return
   }
 
+  // Si es impostor, mostrar ???
   if (player.isImpostor) {
-    displayText.value = `${player.name} es el IMPOSTOR`
+    displayWord.value = `?????`
   } else {
-    displayText.value =
-      `${player.name} es INOCENTE. Palabra: ${player.word}`
+    displayWord.value = player.word
   }
 
   revealed.value = true
@@ -148,8 +150,9 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <div v-if="phase === 'presentation'">
-      <h1>{{ displayText }}</h1>
+    <div v-if="phase === 'presentation'" class="presentation-phase">
+      <h1 class="name">{{ displayText }}</h1>
+      <h1 class="word">{{ displayWord }}</h1>
       <button v-if="!revealed" @click="revealRole">Revelar</button>
       <button v-else @click="nextPlayer">Siguiente</button>
     </div>
@@ -158,3 +161,40 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+  .presentation-phase {
+    position: relative;
+    background-image: url('../src/assets/Telegrama.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .name{
+    position: absolute;
+    width: 745px;
+    top: 32%;
+    left: 51.5%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    text-align: center;
+    color: black;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+
+  .word{
+    display: block;
+    width: 760px;
+    position: absolute;
+    top: 64%;
+    left: 40.3%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    text-align: center;
+    color: black;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+</style>

@@ -141,7 +141,7 @@ export class GameplayScene extends Phaser.Scene {
     
     const fg = this.add.image(640, 360, 'foreground');
     fg.setScale(scale)
-    this.showToast('Di una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.', 5000)
+    this.showToast('Di una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.', 10000)
   }
 
   showToast(message: string, duration = 5000) {
