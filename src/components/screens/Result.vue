@@ -12,22 +12,24 @@
       <p class="subtitle">{{ subtitle }}</p>
 
       <button class="continue" @click="goHome">
-        Continuar
+        <img
+          :src="buttonImage"
+          alt="Continuar"
+        />
       </button>
+
     </div>
   </transition>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
 
-// Resultado recibido por query
 const resultType = computed(() => route.query.result || 'defeat')
-
 
 const subtitle = computed(() =>
   resultType.value === 'victory'
@@ -35,18 +37,25 @@ const subtitle = computed(() =>
     : 'El impostor no fue encontrado a tiempo'
 )
 
-// Imagen dinámica
 const imageSrc = computed(() =>
   resultType.value === 'victory'
     ? new URL('@/assets/Background/FondoVictoria.png', import.meta.url).href
     : new URL('@/assets/Background/FondoDerrota.png', import.meta.url).href
 )
 
-// Navegación
+const isHover = ref(false)
+
+const buttonImage = computed(() =>
+  isHover.value
+    ? new URL('@/assets/Botones/BotonContinuar01.png', import.meta.url).href
+    : new URL('@/assets/Botones/BotonContinuar01Hover.png', import.meta.url).href
+)
+
 const goHome = () => {
   router.push('/')
 }
 </script>
+
 
 <style scoped>
 .screen {
@@ -83,20 +92,26 @@ const goHome = () => {
 }
 
 .continue {
-  padding: 16px 32px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 16px;
+  background: none;
   border: none;
+  padding: 0;
   cursor: pointer;
-
-  background: linear-gradient(135deg, #5B4B8A, #3A2D5F);
-  color: white;
 
   opacity: 0;
   animation: fade-up 1.2s ease forwards;
-  animation-delay: 2.0s;
+  animation-delay: 2s;
 }
+
+.continue img {
+  width: 220px;
+  max-width: 80vw;
+  transition: transform 0.2s ease;
+}
+
+.continue:hover img {
+  transform: scale(1.03);
+}
+
 
 @keyframes fade-up {
   0% {
