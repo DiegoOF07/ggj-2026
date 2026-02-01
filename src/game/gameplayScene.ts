@@ -141,10 +141,10 @@ export class GameplayScene extends Phaser.Scene {
     
     const fg = this.add.image(640, 360, 'foreground');
     fg.setScale(scale)
-    this.showToast('Di una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.', 10000)
+    this.showToast('Di una palabra relacionada para demostrar que conoces la contraseña sin que el impostor descubra cual es.')
   }
 
-  showToast(message: string, duration = 5000) {
+  showToast(message: string) {
     const { width } = this.scale
 
     const padding = 20
@@ -176,17 +176,6 @@ export class GameplayScene extends Phaser.Scene {
       y: toastY,
       duration: 400,
       ease: 'Sine.easeOut'
-    })
-
-    this.time.delayedCall(duration, () => {
-      this.tweens.add({
-        targets: toast,
-        alpha: 0,
-        y: toastY - 20,
-        duration: 400,
-        ease: 'Sine.easeIn',
-        onComplete: () => toast.destroy()
-      })
     })
   }
 

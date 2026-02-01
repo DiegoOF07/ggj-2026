@@ -39,7 +39,11 @@ onMounted(startAnimation)
     </button>
 
     <p class="history">
-        Tienes que encontrar al impostor antes de que sea demasiado tarde...
+      Un impostor se coló en la noche de brujas de 1924 en Scarlett Valley
+
+      La fiesta privada requiere una contraseña para entrar. 
+
+      Averigua quién de los enmascarados no sabe la contraseña y se infiltró en la fiesta.
     </p>
   </div>
 </template>
