@@ -47,7 +47,7 @@ const router = useRouter()
 
 // Límites
 const minPlayers = 3
-const maxPlayers = 8
+const maxPlayers = 6
 
 const playersCount = ref(4)
 const players = ref(Array(playersCount.value).fill(''))
@@ -86,54 +86,85 @@ const continueGame = () => {
 </script>
 
 <style scoped>
-/* Pantalla */
 .screen {
   min-height: 100vh;
   padding: 24px;
   box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+
+  padding-top: 10vh;
+
+  background:
+    linear-gradient(
+      rgba(2, 6, 23, 0.5),
+      rgba(2, 6, 23, 0.7)
+    ),
+    url('@/assets/Background/Background01.png');
+
+  background-size: cover;
+  background-position: center 65%;
+  background-repeat: no-repeat;
+
+  color: white;
 }
 
-/* Texto */
 .title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 6px;
+  letter-spacing: 1.5px;
 }
 
 .subtitle {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  opacity: 0.85;
+  text-align: center;
 }
 
-/* Wrapper */
 .form-wrapper {
   width: 100%;
   max-width: 420px;
+
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+
+  padding: 24px;
+  border-radius: 20px;
 }
 
-/* Controls */
 .controls {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 12px;
   margin-bottom: 20px;
+  align-items: center;
 }
 
 .controls button {
   height: 44px;
-  font-size: 1.4rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: transparent;
+  font-size: 1.6rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .controls span {
   text-align: center;
   font-weight: 600;
+  font-size: 1.2rem;
 }
 
-/* Inputs */
+/* ✏️ Inputs */
 .inputs {
   display: flex;
   flex-direction: column;
@@ -142,25 +173,37 @@ const continueGame = () => {
 
 .inputs input {
   padding: 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(2, 6, 23, 0.6);
+  color: white;
 }
 
-/* Continue */
+.inputs input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .continue {
   width: 100%;
   margin-top: 28px;
   padding: 16px;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 14px;
   border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #5B4B8A, #564686);
+  color: #ffffff;
 }
 
-/* 🔴 ALERT MODAL */
+.continue:hover {
+  filter: brightness(1.05);
+}
+
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,13 +211,14 @@ const continueGame = () => {
 }
 
 .alert-card {
-  background: #2e2d2d;
+  background: rgba(15, 23, 42, 0.95);
   width: 90%;
   max-width: 320px;
   padding: 24px;
-  border-radius: 16px;
+  border-radius: 18px;
   text-align: center;
   animation: pop 0.2s ease-out;
+  color: white;
 }
 
 .alert-card h2 {
@@ -183,18 +227,20 @@ const continueGame = () => {
 
 .alert-card p {
   margin-bottom: 20px;
+  opacity: 0.85;
 }
 
 .alert-card button {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   font-weight: 600;
   cursor: pointer;
+  background: #5B4B8A;
+  color: #ffffff;
 }
 
-/* Animación */
 @keyframes pop {
   from {
     transform: scale(0.9);

@@ -56,9 +56,21 @@ onMounted(startAnimation)
   justify-content: center;
   align-items: center;
   gap: 5rem;
-  background: radial-gradient(circle at top, #0f172a, #020617);
+
+  background:
+    linear-gradient(
+      rgba(2, 6, 23, 0.6),
+      rgba(2, 6, 23, 0.8)
+    ),
+    url('@/assets/Background/Background01.png');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   color: white;
 }
+
 
 .title {
   font-size: 3rem;
