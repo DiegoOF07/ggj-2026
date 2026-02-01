@@ -93,7 +93,7 @@ export class GameplayScene extends Phaser.Scene {
       playerSprite.setDisplaySize(spriteWidth, spriteHeight)
       playerSprite.setScale(2.0)
 
-      const maskSprite = this.add.sprite(0, 0, player.maskKey)
+      const maskSprite = this.add.sprite(-5, 0, player.maskKey)
       maskSprite.setDisplaySize(spriteWidth, spriteHeight)
       maskSprite.setScale(2.0)
 
@@ -272,7 +272,8 @@ export class GameplayScene extends Phaser.Scene {
       alpha: 0,
       y: mask!.y + 20,
       duration: 300,
-      onComplete: () => mask?.destroy()
+      ease: 'Sine.easeInOut',
+      onComplete: () => mask?.destroy(),
     })
 
     this.maskSprites.delete(name)
