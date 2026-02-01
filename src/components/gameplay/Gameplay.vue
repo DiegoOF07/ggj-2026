@@ -4,10 +4,8 @@ import Phaser from 'phaser'
 import { GameplayScene } from '../../game/gameplayScene'
 import { gameState } from '../../game/gameState'
 import type { Player } from '../../models/player'
-import ConfirmationModal from '../common/ConfirmationModal.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { words } from '../../data/words.ts'
-
 
 const phase = ref<'presentation' | 'game'>('presentation')
 const currentIndex = ref(0)
@@ -19,22 +17,18 @@ const router = useRouter()
 const route = useRoute()
 const players = ref<Player[]>([])
 
-const showModal = ref(false)
-const selectedPlayerName = ref<string | null>(null)
-
 let phaserGame: Phaser.Game | null = null
 
 function getRandomWords(data: { category: string; words: string[] }[]) {
-    const randomCategory = data[Math.floor(Math.random() * data.length)];
-    
-    // Obtener una palabra aleatoria de las palabras de esa categoría
-    const words = randomCategory?.words || [];
-    const randomWord = words[Math.floor(Math.random() * words.length)];
-    
-    return {
-        category: randomCategory?.category,
-        word: randomWord
-    };
+  const randomCategory = data[Math.floor(Math.random() * data.length)];
+  
+  const words = randomCategory?.words || [];
+  const randomWord = words[Math.floor(Math.random() * words.length)];
+  
+  return {
+      category: randomCategory?.category,
+      word: randomWord
+  };
 }
 
 
@@ -91,75 +85,26 @@ watch(phase, (newPhase) => {
   }
 })
 
-const onPlayerClicked = (event: Event) => {
-  const customEvent = event as CustomEvent<Player>
-  selectedPlayerName.value = customEvent.detail.name
-  showModal.value = true
-  window.dispatchEvent(
-    new CustomEvent('vue:modal-open')
-  )
-}
+const onPlayerEliminated = (event: Event) => {
+  const customEvent = event as CustomEvent<string>
+  const playerName = customEvent.detail
 
-const confirmDelete = () => {
-  if (!selectedPlayerName.value) return
-
-  // Encontrar al jugador que se va a eliminar
-  const playerToDelete = gameState.players.find(
-    player => player.name === selectedPlayerName.value
-  )
-
-  // Marcar como inactivo
   gameState.players.forEach(player => {
-    if (player.name === selectedPlayerName.value) {
+    if (player.name === playerName) {
       player.isActive = false
     }
   })
 
-  // Emitir evento para actualizar UI de Phaser
-  window.dispatchEvent(
-    new CustomEvent('vue:delete-player', {
-      detail: selectedPlayerName.value
-    })
-  )
-
-  // Verificar si el juego terminó
   const gameEnded = gameState.checkgameEnd()
-  
+
   if (gameEnded && gameState.winner) {
-    // Determinar el tipo de resultado desde la perspectiva de los tripulantes
-    let resultType = 'defeat'
-    
-    if (gameState.winner === 'crewmates') {
-      // Los tripulantes ganaron = Victoria
-      resultType = 'victory'
-    } else if (gameState.winner === 'impostors') {
-      // Los impostores ganaron = Derrota
-      resultType = 'defeat'
-    }
-    
-    // Redirigir a la pantalla de resultados
-    router.push({ 
+    router.push({
       path: '/result',
       query: {
-        result: resultType
+        result: gameState.winner === 'crewmates' ? 'victory' : 'defeat'
       }
     })
   }
-
-  showModal.value = false
-  selectedPlayerName.value = null
-
-  window.dispatchEvent(
-    new CustomEvent('vue:modal-close')
-  )
-}
-
-const cancelDelete = () => {
-  showModal.value = false
-   
-  window.dispatchEvent(
-    new CustomEvent('vue:modal-close')
-  )
 }
 
 onMounted(() => {
@@ -168,7 +113,6 @@ onMounted(() => {
   if (playersQuery && typeof playersQuery === 'string') {
     const playerNames = JSON.parse(playersQuery) as string[]
     
-    // Convierte los nombres a objetos Player
     const impostorIndex = Math.floor(Math.random() * playerNames.length)
     players.value = playerNames.map((name, index) => ({
       name,
@@ -183,11 +127,11 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  window.addEventListener('phaser:player-clicked', onPlayerClicked)
+  window.addEventListener('game:player-eliminated', onPlayerEliminated)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('phaser:player-clicked', onPlayerClicked)
+  window.removeEventListener('game:player-eliminated', onPlayerEliminated)
 })
 
 onUnmounted(() => {
@@ -206,11 +150,4 @@ onUnmounted(() => {
       <div id="phaser-container"></div>
     </div>
   </div>
-  <ConfirmationModal
-    :show="showModal"
-    title="¿Desenmascarar jugador?"
-    :message="`¿Estas seguro que quieres desenmascarar a ${selectedPlayerName}?`"
-    @confirm="confirmDelete"
-    @cancel="cancelDelete"
-  />
 </template>
